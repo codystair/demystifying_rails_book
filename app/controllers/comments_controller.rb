@@ -1,14 +1,14 @@
 class CommentsController < ApplicationController
-  # def list_comments -> list -> index
+  before_action :find_post, only: [:create, :destroy]
+
   def index
     @comments = Comment.all
   end
 
-  # def create_comment -> create
   def create
-    @post    = Post.find params['post_id']
-    @comment = @post.build_comment('author' => params['author'],
-                                   'body' => params['body'])
+    @comment = @post.build_comment(
+      'body' => params['body'], 'author' => params['author']
+    )
 
     if @comment.save
       redirect_to post_path(@post.id)
@@ -17,11 +17,15 @@ class CommentsController < ApplicationController
     end
   end
 
-  # def delete_comment -> delete -> destroy
   def destroy
-    post = Post.find(params['post_id'])
-    post.delete_comment(params['id'])
+    @post.delete_comment(params[:id])
 
-    redirect_to post_path(post.id)
+    redirect_to post_path(@post.id)
+  end
+
+  private
+
+  def find_post
+    @post = Post.find(params['post_id'])
   end
 end
