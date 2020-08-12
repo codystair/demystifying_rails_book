@@ -2,8 +2,8 @@
   <body>
 
     <div class="comments">
-      <% comments.each do |comment| %>
-
+      <% @comments.each do |comment| %>
+      <!-- ^ use `@comments` instead of `comments` -->
         <div class="comment">
           <small class="comment_meta">
             <span class="comment_post_title">
@@ -17,7 +17,6 @@
 
           <p class="comment_body"><%= comment.body %></p>
         </div>
-
         <hr />
       <% end %>
     </div>
